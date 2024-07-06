@@ -30,3 +30,8 @@
 *.exe
 *.out
 *.app
+
+#PathToBuilds
+
+/home/vitaliy/Currency_Exchanger/Currency_Exchanger/
+/home/vitaliy/Currency_Exchanger/build/
