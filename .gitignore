@@ -33,5 +33,7 @@
 
 #PathToBuilds
 
-/home/vitaliy/Currency_Exchanger/Currency_Exchanger/
-/home/vitaliy/Currency_Exchanger/build/
+Currency_Exchanger.pro.user
+Currency_Exchanger/Currency_Exchanger.pro.user
+Currency_Exchanger/build/
+build/
