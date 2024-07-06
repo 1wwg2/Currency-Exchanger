@@ -13,11 +13,12 @@ class ExchangerWidget : public QWidget
 
 public:
     ExchangerWidget(QWidget* parent = nullptr);
-private slots:
+protected slots:
 
 private:
     QLabel* InscriptionFrom;
     QLabel* InscriptionTo;
+    QLabel* IncorrertTypeEnter;
     QPushButton* Convert;
     QComboBox* ChoiceFirstСurrencyType;
     QComboBox* ChoiceSecondСurrencyType;
