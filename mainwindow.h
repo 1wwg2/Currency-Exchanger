@@ -1,10 +1,19 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-class MainWindow
+#include <QApplication>
+#include <QMainWindow>
+
+#include "exchangerwidget.h"
+
+class MainWindow : public QMainWindow
 {
+    Q_OBJECT
 public:
-    MainWindow();
+    MainWindow(QWidget* parent = nullptr);
+
+private:
+    ExchangerWidget* WidgetMain;
 };
 
 #endif // MAINWINDOW_H

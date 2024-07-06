@@ -1,9 +1,16 @@
-#include <QCoreApplication>
+#include <QApplication>
 #include <QWidget>
+#include <QVBoxLayout>
+#include <QComboBox>
+#include <QLabel>
 
-int main(int argc, char *argv[])
-{
-    QCoreApplication a(argc, argv);
+#include "mainwindow.h"
 
-    return a.exec();
+int main(int argc, char *argv[]) {
+    QApplication app(argc, argv);
+
+    MainWindow window;
+    window.show();
+
+    return app.exec();
 }
