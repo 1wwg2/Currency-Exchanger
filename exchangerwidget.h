@@ -7,6 +7,7 @@
 #include <QLabel>
 #include <QComboBox>
 #include <QLineEdit>
+
 class ExchangerWidget : public QWidget
 {
     Q_OBJECT
@@ -14,7 +15,7 @@ class ExchangerWidget : public QWidget
 public:
     ExchangerWidget(QWidget* parent = nullptr);
 protected slots:
-
+    void MakeConvert();
 private:
     QLabel* InscriptionFrom;
     QLabel* InscriptionTo;
