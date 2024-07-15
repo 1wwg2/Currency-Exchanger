@@ -1,11 +1,53 @@
-#include "exchangerwidget.h"
-
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QDoubleValidator>
 #include <QString>
+#include <QMessageBox>
+
+#include "customvalidator.h"
+#include "exchangerwidget.h"
+
 
 ExchangerWidget::ExchangerWidget(QWidget* parent) : QWidget(parent)
+{
+    InitializationComponents();
+    SetObjectOnWindow();
+
+    connect(Convert, SIGNAL(clicked()), this, SLOT(MakeConvert()));
+    connect(ChoiceFirstСurrencyType, SIGNAL(currentIndexChanged(int)), this, SLOT(onComboBoxIndexChangedFirst(int)));
+    connect(ChoiceSecondСurrencyType, SIGNAL(currentIndexChanged(int)), this, SLOT(onComboBoxIndexChangedSecond(int)));
+}
+
+void ExchangerWidget::MakeConvert()
+{
+
+    if(FirstFormBalance->text().isEmpty())
+    {
+        SecondFormBalance->setText("");
+        QMessageBox::information(this, "Warning!",
+                                 "Nothing to convert",
+                                 QMessageBox::Close,
+                                 QMessageBox::Close);
+    }
+    else
+    {
+        QString From = ChoiceFirstСurrencyType->currentText();
+        QString To = ChoiceSecondСurrencyType->currentText();
+        double Amount = FirstFormBalance->text().toDouble();
+
+        double FromRate = ExchangeRates[From];
+        double ToRate = ExchangeRates[To];
+        double Result = (Amount / FromRate) * ToRate;
+
+
+        QString answerOnRequest = QString::number(Result, 'f', 2);
+
+        SecondFormBalance->setText(answerOnRequest);
+    }
+
+}
+
+void ExchangerWidget::InitializationComponents()
 {
     InscriptionFrom = new QLabel("From:",this);
     InscriptionTo = new QLabel("To:",this);
@@ -13,6 +55,7 @@ ExchangerWidget::ExchangerWidget(QWidget* parent) : QWidget(parent)
     Convert = new QPushButton("Convert money");
 
     FirstFormBalance = new QLineEdit(this);
+    FirstFormBalance->setPlaceholderText("Enter value to convert:");
     SecondFormBalance = new QLineEdit(this);
     SecondFormBalance->setReadOnly(true);
     SecondFormBalance->setFocusPolicy(Qt::NoFocus);
@@ -21,17 +64,31 @@ ExchangerWidget::ExchangerWidget(QWidget* parent) : QWidget(parent)
 
     Convert = new QPushButton("Convert type");
 
-    FirstFormBalance->setValidator(new QDoubleValidator(this));
-    SecondFormBalance->setValidator(new QDoubleValidator(this));
+    FirstFormBalance->setValidator(new CustomValidator(this));
+    SecondFormBalance->setValidator(new CustomValidator(this));
 
-    ChoiceFirstСurrencyType->addItem("Item 1");
-    ChoiceFirstСurrencyType->addItem("Item 2");
-    ChoiceFirstСurrencyType->addItem("Item 3");
+    InitializationComboBox();
 
-    ChoiceSecondСurrencyType->addItem("Item 1");
-    ChoiceSecondСurrencyType->addItem("Item 2");
-    ChoiceSecondСurrencyType->addItem("Item 3");
+    PreviousIndexFirstBox = ChoiceFirstСurrencyType->currentIndex();
+    PreviousIndexSecondBox = ChoiceSecondСurrencyType->currentIndex();
 
+}
+
+void ExchangerWidget::InitializationComboBox()
+{
+    QVector<QString> VectorOfСurrencies = {"USD","UAH", "EURO"};
+    ChoiceFirstСurrencyType->addItems(VectorOfСurrencies);
+    ChoiceFirstСurrencyType->setCurrentIndex(0);
+    ChoiceSecondСurrencyType->addItems(VectorOfСurrencies);
+    ChoiceSecondСurrencyType->setCurrentIndex(1);
+
+    ExchangeRates[VectorOfСurrencies[0]] = 1.0;
+    ExchangeRates[VectorOfСurrencies[1]] = 41.03;
+    ExchangeRates[VectorOfСurrencies[2]] = 0.92;
+}
+
+void ExchangerWidget::SetObjectOnWindow()
+{
     QVBoxLayout* LabelNChoise = new QVBoxLayout();
     LabelNChoise->addWidget(InscriptionFrom);
 
@@ -61,18 +118,41 @@ ExchangerWidget::ExchangerWidget(QWidget* parent) : QWidget(parent)
 
     setLayout(mainContainer);
 
-    connect(Convert, SIGNAL(clicked()), this, SLOT(MakeConvert()));
-
 }
 
-void ExchangerWidget::MakeConvert()
+void ExchangerWidget::onComboBoxIndexChangedFirst(int index)
 {
-    const double dollar = 0.025;
-    double value = 0.0;
-    QString buffer = FirstFormBalance->text();
-    (value = buffer.toDouble()) *= dollar;
-    QString answerOnRequest = QString::number(value, 'f', 2);
 
-    SecondFormBalance->setText(answerOnRequest);
+    int CurrIndexSecondBox = ChoiceSecondСurrencyType->currentIndex();
+    if (index == CurrIndexSecondBox)
+    {
+        ChoiceSecondСurrencyType->setCurrentIndex(PreviousIndexFirstBox);
+    }
+    else
+    {
+        PreviousIndexFirstBox = index;
+    }
+
 }
+
+void ExchangerWidget::onComboBoxIndexChangedSecond(int index)
+{
+    int CurrIndexFirstBox = ChoiceFirstСurrencyType->currentIndex();
+    if (index == CurrIndexFirstBox)
+    {
+        ChoiceFirstСurrencyType->setCurrentIndex(PreviousIndexSecondBox);
+    }
+    else
+    {
+        PreviousIndexSecondBox = index;
+    }
+
+}
+
+
+
+
+
+
+
 

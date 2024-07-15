@@ -7,6 +7,7 @@
 #include <QLabel>
 #include <QComboBox>
 #include <QLineEdit>
+#include <QMap>
 
 class ExchangerWidget : public QWidget
 {
@@ -16,7 +17,13 @@ public:
     ExchangerWidget(QWidget* parent = nullptr);
 protected slots:
     void MakeConvert();
+    void onComboBoxIndexChangedFirst(int);
+    void onComboBoxIndexChangedSecond(int);
 private:
+    void InitializationComponents();
+    void SetObjectOnWindow();
+    void InitializationComboBox();
+
     QLabel* InscriptionFrom;
     QLabel* InscriptionTo;
     QLabel* IncorrertTypeEnter;
@@ -25,6 +32,10 @@ private:
     QComboBox* ChoiceSecondСurrencyType;
     QLineEdit* FirstFormBalance;
     QLineEdit* SecondFormBalance;
+    QMap<QString, double> ExchangeRates;
+
+    int PreviousIndexFirstBox;
+    int PreviousIndexSecondBox;
 };
 
 #endif // EXCHANGERWIDGET_H
