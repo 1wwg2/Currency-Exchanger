@@ -76,11 +76,28 @@ void ExchangerWidget::InitializationComponents()
 
 void ExchangerWidget::InitializationComboBox()
 {
-    QVector<QString> VectorOfСurrencies = {"USD","UAH", "EURO"};
-    ChoiceFirstСurrencyType->addItems(VectorOfСurrencies);
+    //Идея: Вектор с названиями, берем строку, добавляем в путь, строка и картинка в той же кодировке (UAH.png and UAH)
+    //Возможно при переносе на другой ПК отвалятся иконки!!!
+    /*TODO: сделать енам, подумать про масштабирование картинок + вектора, скорее всего использовать мапу*/
+    enum class СurrenciesName
+    {
+        USD,
+        UAH,
+        EURO,
+        RUB
+    };
+
+    QVector<QString> VectorOfСurrencies = {"USD","UAH", "EUR", "RUB", "RMB"};
+
+    for(int i = 0; i < VectorOfСurrencies.size(); ++i)
+    {
+        QString NameOfCurrency = VectorOfСurrencies.at(i);
+        ChoiceFirstСurrencyType->addItem(QIcon(":/resources/images/" + NameOfCurrency), NameOfCurrency);
+        ChoiceSecondСurrencyType->addItem(QIcon(":/resources/images/" + NameOfCurrency), NameOfCurrency);
+    }
     ChoiceFirstСurrencyType->setCurrentIndex(0);
-    ChoiceSecondСurrencyType->addItems(VectorOfСurrencies);
     ChoiceSecondСurrencyType->setCurrentIndex(1);
+
 
     ExchangeRates[VectorOfСurrencies[0]] = 1.0;
     ExchangeRates[VectorOfСurrencies[1]] = 41.03;

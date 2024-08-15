@@ -21,3 +21,8 @@ HEADERS += \
     customvalidator.h \
     exchangerwidget.h \
     mainwindow.h
+
+DISTFILES +=
+
+RESOURCES += \
+    resources.qrc

@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/">
+        <file>resources/images/EUR.png</file>
+        <file>resources/images/RMB.png</file>
+        <file>resources/images/RUB.png</file>
+        <file>resources/images/UAH.png</file>
+        <file>resources/images/USD.png</file>
+    </qresource>
+</RCC>
