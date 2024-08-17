@@ -9,6 +9,7 @@
 #include <QLineEdit>
 #include <QMap>
 
+#include "apiclient.h"
 class ExchangerWidget : public QWidget
 {
     Q_OBJECT
@@ -33,6 +34,8 @@ private:
     QLineEdit* FirstFormBalance;
     QLineEdit* SecondFormBalance;
     QMap<QString, double> ExchangeRates;
+    ApiClient* DataForMapCurrency;
+
 
     int PreviousIndexFirstBox;
     int PreviousIndexSecondBox;

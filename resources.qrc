@@ -6,5 +6,6 @@
         <file>resources/images/UAH.png</file>
         <file>resources/images/USD.png</file>
         <file>resources/images/IconMoney.png</file>
+        <file>resources/images/CZK.png</file>
     </qresource>
 </RCC>

@@ -6,7 +6,7 @@
 
 #include "customvalidator.h"
 #include "exchangerwidget.h"
-
+#include "apiclient.h"
 
 ExchangerWidget::ExchangerWidget(QWidget* parent) : QWidget(parent)
 {
@@ -78,7 +78,7 @@ void ExchangerWidget::InitializationComboBox()
 {
     //Идея: Вектор с названиями, берем строку, добавляем в путь, строка и картинка в той же кодировке (UAH.png and UAH)
     //Возможно при переносе на другой ПК отвалятся иконки!!!
-    /*TODO: сделать енам, подумать про масштабирование картинок + вектора, скорее всего использовать мапу*/
+    /*TODO: сделать енам, посмотреть, почему в комбобокс при выборе вылазит троеточие*/
     enum class СurrenciesName
     {
         USD,
@@ -87,7 +87,7 @@ void ExchangerWidget::InitializationComboBox()
         RUB
     };
 
-    QVector<QString> VectorOfСurrencies = {"USD","UAH", "EUR", "RUB", "RMB"};
+    QVector<QString> VectorOfСurrencies = {"UAH", "USD", "EUR", "RUB", "CZK"};
 
     for(int i = 0; i < VectorOfСurrencies.size(); ++i)
     {
@@ -95,12 +95,13 @@ void ExchangerWidget::InitializationComboBox()
         ChoiceFirstСurrencyType->addItem(QIcon(":/resources/images/" + NameOfCurrency), NameOfCurrency);
         ChoiceSecondСurrencyType->addItem(QIcon(":/resources/images/" + NameOfCurrency), NameOfCurrency);
     }
+
     ChoiceFirstСurrencyType->setCurrentIndex(0);
     ChoiceSecondСurrencyType->setCurrentIndex(1);
 
 
-    ExchangeRates[VectorOfСurrencies[0]] = 1.0;
-    ExchangeRates[VectorOfСurrencies[1]] = 41.03;
+    ExchangeRates[VectorOfСurrencies[0]] = 41.03;
+    ExchangeRates[VectorOfСurrencies[1]] = 1.0;
     ExchangeRates[VectorOfСurrencies[2]] = 0.92;
 }
 
@@ -134,6 +135,9 @@ void ExchangerWidget::SetObjectOnWindow()
     mainContainer->addWidget(Convert);
 
     setLayout(mainContainer);
+
+    DataForMapCurrency = new ApiClient(this);
+    DataForMapCurrency->GetAPIInfo("https://bank.gov.ua/NBUStatService/v1/statd11111irectory/exchange");
 
 }
 
