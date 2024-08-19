@@ -81,8 +81,6 @@ void ExchangerWidget::InitializationComponents()
 
 void ExchangerWidget::InitializationComboBox()
 {
-
-
     for(int i = 0; i < VectorOfСurrencies.size(); ++i)
     {
         QString NameOfCurrency = VectorOfСurrencies.at(i);
@@ -126,9 +124,6 @@ void ExchangerWidget::SetObjectOnWindow()
     mainContainer->addWidget(Convert);
 
     setLayout(mainContainer);
-
-
-
 }
 
 void ExchangerWidget::onComboBoxIndexChangedFirst(int index)
@@ -162,32 +157,24 @@ void ExchangerWidget::onComboBoxIndexChangedSecond(int index)
 
 void ExchangerWidget::ConnectToActualCurrencies()
 {
-    // Получаем исходный map
     ExchangeRates = DataForMapCurrency->GetMapWithFilterData();
 
-    // Создаем QSet для поиска
+
     QSet<QString> validCurrencies(VectorOfСurrencies.begin(), VectorOfСurrencies.end());
 
-    // Новый QMap для отфильтрованных данных
+
     QMap<QString, double> filteredRates;
 
 
     for (auto it = ExchangeRates.constBegin(); it != ExchangeRates.constEnd(); ++it)
     {
-        if (validCurrencies.contains(it.key())) //|| validCurrencies.contains("UAH"))
+        if (validCurrencies.contains(it.key()))
         {
             filteredRates.insert(it.key(), it.value());
         }
     }
     filteredRates.insert("UAH", 1);
-    // Обновляем ExchangeRates отфильтрованными данными
     ExchangeRates = filteredRates;
-
-    // Выводим результаты
-    for (auto it = ExchangeRates.begin(); it != ExchangeRates.end(); ++it)
-    {
-        qDebug() << "Key:" << it.key() << ", Value:" << it.value();
-    }
 }
 
 
