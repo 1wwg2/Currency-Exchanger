@@ -10,6 +10,7 @@
 
 ExchangerWidget::ExchangerWidget(QWidget* parent) : QWidget(parent)
 {
+    VectorOfСurrencies = {"UAH", "USD", "EUR", "RUB", "CZK"};
     InitializationComponents();
     SetObjectOnWindow();
 
@@ -31,6 +32,7 @@ void ExchangerWidget::MakeConvert()
     }
     else
     {
+        ConnectToActualCurrencies();
         QString From = ChoiceFirstСurrencyType->currentText();
         QString To = ChoiceSecondСurrencyType->currentText();
         double Amount = FirstFormBalance->text().toDouble();
@@ -49,6 +51,9 @@ void ExchangerWidget::MakeConvert()
 
 void ExchangerWidget::InitializationComponents()
 {
+    DataForMapCurrency = new ApiClient(this);
+    DataForMapCurrency->GetAPIInfo("https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange");
+
     InscriptionFrom = new QLabel("From:",this);
     InscriptionTo = new QLabel("To:",this);
     IncorrertTypeEnter = new QLabel("Incorrect type");
@@ -76,18 +81,7 @@ void ExchangerWidget::InitializationComponents()
 
 void ExchangerWidget::InitializationComboBox()
 {
-    //Идея: Вектор с названиями, берем строку, добавляем в путь, строка и картинка в той же кодировке (UAH.png and UAH)
-    //Возможно при переносе на другой ПК отвалятся иконки!!!
-    /*TODO: сделать енам, посмотреть, почему в комбобокс при выборе вылазит троеточие*/
-    enum class СurrenciesName
-    {
-        USD,
-        UAH,
-        EURO,
-        RUB
-    };
 
-    QVector<QString> VectorOfСurrencies = {"UAH", "USD", "EUR", "RUB", "CZK"};
 
     for(int i = 0; i < VectorOfСurrencies.size(); ++i)
     {
@@ -97,12 +91,9 @@ void ExchangerWidget::InitializationComboBox()
     }
 
     ChoiceFirstСurrencyType->setCurrentIndex(0);
+    ChoiceFirstСurrencyType->setMinimumWidth(85);
     ChoiceSecondСurrencyType->setCurrentIndex(1);
-
-
-    ExchangeRates[VectorOfСurrencies[0]] = 41.03;
-    ExchangeRates[VectorOfСurrencies[1]] = 1.0;
-    ExchangeRates[VectorOfСurrencies[2]] = 0.92;
+    ChoiceSecondСurrencyType->setMinimumWidth(85);
 }
 
 void ExchangerWidget::SetObjectOnWindow()
@@ -136,8 +127,7 @@ void ExchangerWidget::SetObjectOnWindow()
 
     setLayout(mainContainer);
 
-    DataForMapCurrency = new ApiClient(this);
-    DataForMapCurrency->GetAPIInfo("https://bank.gov.ua/NBUStatService/v1/statd11111irectory/exchange");
+
 
 }
 
@@ -170,8 +160,35 @@ void ExchangerWidget::onComboBoxIndexChangedSecond(int index)
 
 }
 
+void ExchangerWidget::ConnectToActualCurrencies()
+{
+    // Получаем исходный map
+    ExchangeRates = DataForMapCurrency->GetMapWithFilterData();
+
+    // Создаем QSet для поиска
+    QSet<QString> validCurrencies(VectorOfСurrencies.begin(), VectorOfСurrencies.end());
+
+    // Новый QMap для отфильтрованных данных
+    QMap<QString, double> filteredRates;
 
 
+    for (auto it = ExchangeRates.constBegin(); it != ExchangeRates.constEnd(); ++it)
+    {
+        if (validCurrencies.contains(it.key())) //|| validCurrencies.contains("UAH"))
+        {
+            filteredRates.insert(it.key(), it.value());
+        }
+    }
+    filteredRates.insert("UAH", 1);
+    // Обновляем ExchangeRates отфильтрованными данными
+    ExchangeRates = filteredRates;
+
+    // Выводим результаты
+    for (auto it = ExchangeRates.begin(); it != ExchangeRates.end(); ++it)
+    {
+        qDebug() << "Key:" << it.key() << ", Value:" << it.value();
+    }
+}
 
 
 

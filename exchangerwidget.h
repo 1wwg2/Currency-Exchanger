@@ -20,11 +20,12 @@ protected slots:
     void MakeConvert();
     void onComboBoxIndexChangedFirst(int);
     void onComboBoxIndexChangedSecond(int);
+
 private:
     void InitializationComponents();
     void SetObjectOnWindow();
     void InitializationComboBox();
-
+    void ConnectToActualCurrencies();
     QLabel* InscriptionFrom;
     QLabel* InscriptionTo;
     QLabel* IncorrertTypeEnter;
@@ -35,7 +36,7 @@ private:
     QLineEdit* SecondFormBalance;
     QMap<QString, double> ExchangeRates;
     ApiClient* DataForMapCurrency;
-
+    QVector<QString> VectorOfСurrencies;
 
     int PreviousIndexFirstBox;
     int PreviousIndexSecondBox;

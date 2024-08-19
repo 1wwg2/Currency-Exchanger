@@ -8,6 +8,7 @@
 #include <QUrl>
 #include <QObject>
 #include <QXmlStreamReader>
+#include <QMap>
 
 class ApiClient : public QObject
 {
@@ -15,15 +16,18 @@ class ApiClient : public QObject
 public:
    explicit ApiClient(QObject* parent = nullptr);
     void GetAPIInfo(const QString& SiteName);
+    void FillInMap();
+    QMap<QString, double> GetMapWithFilterData() const;
 private slots:
     void NetworkReply();
 private:
     void RemoveTags(const QString &xmlContent);
-    void FillInMap();
+
 
     QNetworkAccessManager* manager;
     QNetworkReply* currentReply;
     QVector<QString> DataFromXML;
+    QMap<QString, double> MapWithFilterData;
 
 };
 

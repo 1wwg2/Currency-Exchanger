@@ -7,7 +7,7 @@ ApiClient::ApiClient(QObject* parent) : QObject()
 //"https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange"
 void ApiClient::GetAPIInfo(const QString& Site)
 {
-    QNetworkRequest request((QUrl("https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange")));
+    QNetworkRequest request((QUrl(Site)));
 
     currentReply= manager->get(request);
 
@@ -15,19 +15,6 @@ void ApiClient::GetAPIInfo(const QString& Site)
 
 }
 
-/*Object::connect(reply, &QNetworkReply::finished, [&]() {
-        if (reply->error() == QNetworkReply::NoError) {
-            QByteArray response = reply->readAll();
-
-
-            qDebug() << "Decoded String:" << decodedString;
-            qDebug() << "Response:" << response;
-        } else {
-            qDebug() << "Error:" << reply->errorString();
-        }
-        reply->deleteLater();
-
-    });*/
 void ApiClient::NetworkReply()
 {
     if(currentReply->error() == QNetworkReply::NoError)
@@ -56,15 +43,16 @@ void ApiClient::RemoveTags(const QString &xmlContent)
             DataFromXML.push_back(xml.text().toString());
         }
     }
-    FillInMap();
     if (xml.hasError())
     {
         qDebug() << "Error parsing XML:" << xml.errorString();
     }
-}
+    FillInMap();
 
+}
 void ApiClient::FillInMap()
 {
+
     for(int i = 0; i < DataFromXML.size(); ++i)
     {
         bool isCorrect = true;
@@ -78,8 +66,22 @@ void ApiClient::FillInMap()
         }
         if(isCorrect)
         {
-            qDebug() << DataFromXML[i];
-            qDebug() << DataFromXML[i - 1];
+            MapWithFilterData.insert(DataFromXML[i], DataFromXML[i - 1].toDouble());
         }
     }
+
+    /*for (auto it = MapWithFilterData.begin(); it != MapWithFilterData.end(); ++it)
+      {
+        qDebug() << "Key:" << it.key() << ", Value:" << it.value();
+      }
+ */
+      // qDebug() << MapWithFilterData.size();
+
+}
+
+
+
+QMap<QString, double> ApiClient::GetMapWithFilterData() const
+{
+    return MapWithFilterData;
 }
