@@ -21,6 +21,7 @@ ExchangerWidget::ExchangerWidget(QWidget* parent) : QWidget(parent)
 
 void ExchangerWidget::MakeConvert()
 {
+    ConnectToActualCurrencies();
 
     if(FirstFormBalance->text().isEmpty())
     {
@@ -32,13 +33,12 @@ void ExchangerWidget::MakeConvert()
     }
     else
     {
-        ConnectToActualCurrencies();
         QString From = ChoiceFirstСurrencyType->currentText();
         QString To = ChoiceSecondСurrencyType->currentText();
         double Amount = FirstFormBalance->text().toDouble();
 
-        double FromRate = ExchangeRates[From];
-        double ToRate = ExchangeRates[To];
+        double FromRate = ExchangeRates[To];
+        double ToRate = ExchangeRates[From];
         double Result = (Amount / FromRate) * ToRate;
 
 
@@ -159,12 +159,9 @@ void ExchangerWidget::ConnectToActualCurrencies()
 {
     ExchangeRates = DataForMapCurrency->GetMapWithFilterData();
 
-
     QSet<QString> validCurrencies(VectorOfСurrencies.begin(), VectorOfСurrencies.end());
 
-
     QMap<QString, double> filteredRates;
-
 
     for (auto it = ExchangeRates.constBegin(); it != ExchangeRates.constEnd(); ++it)
     {
