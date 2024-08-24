@@ -1,18 +1,17 @@
 #include "apiclient.h"
 
-ApiClient::ApiClient(QObject* parent) : QObject()
+ApiClient::ApiClient(QWidget* parent) : QWidget(parent)
 {
     manager = new QNetworkAccessManager(this);
+
 }
-//"https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange"
+
 void ApiClient::GetAPIInfo(const QString& Site)
 {
     QNetworkRequest request((QUrl(Site)));
-
     currentReply= manager->get(request);
 
     connect(currentReply, SIGNAL(finished()), this, SLOT(NetworkReply()));
-
 }
 
 void ApiClient::NetworkReply()
@@ -23,10 +22,15 @@ void ApiClient::NetworkReply()
         QByteArray response = currentReply->readAll();
         decodedString = QString::fromUtf8(response);
         RemoveTags(decodedString);
-        //qDebug() << decodedString;
     }
-    else {
-        qDebug() << "Error:" << currentReply->errorString(); // Окно ошибки, как и везде
+    else
+    {
+        qDebug() << "Error:" << currentReply->errorString();
+        QMessageBox msgBox(QMessageBox::Warning, "Warning!", "Error connect to API!:", QMessageBox::Close, this);
+        if (msgBox.exec() == QMessageBox::Close)
+        {
+            QApplication::quit();
+        }
     }
     currentReply->deleteLater();
 }
@@ -43,10 +47,16 @@ void ApiClient::RemoveTags(const QString &xmlContent)
             DataFromXML.push_back(xml.text().toString());
         }
     }
+
     if (xml.hasError())
     {
-        qDebug() << "Error parsing XML:" << xml.errorString();
+        QMessageBox msgBox(QMessageBox::Warning, "Warning!", "Error parsing XML:", QMessageBox::Close, this);
+        if (msgBox.exec() == QMessageBox::Close)
+        {
+            QApplication::quit();
+        }
     }
+
     FillInMap();
 
 }
@@ -69,17 +79,7 @@ void ApiClient::FillInMap()
             MapWithFilterData.insert(DataFromXML[i], DataFromXML[i - 1].toDouble());
         }
     }
-
-    /*for (auto it = MapWithFilterData.begin(); it != MapWithFilterData.end(); ++it)
-      {
-        qDebug() << "Key:" << it.key() << ", Value:" << it.value();
-      }
- */
-      // qDebug() << MapWithFilterData.size();
-
 }
-
-
 
 QMap<QString, double> ApiClient::GetMapWithFilterData() const
 {

@@ -7,5 +7,7 @@
         <file>resources/images/USD.png</file>
         <file>resources/images/IconMoney.png</file>
         <file>resources/images/CZK.png</file>
+        <file>resources/styles/currencystyle.css</file>
+        <file>resources/images/uptodown.png</file>
     </qresource>
 </RCC>

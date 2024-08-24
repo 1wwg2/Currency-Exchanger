@@ -1,0 +1,123 @@
+
+QMainWindow
+{
+background: #fff;
+color: #000000
+
+}
+
+QLabel#InscriptionFrom
+{
+    color: #6495ED;
+    padding: 5px 10px;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+QLabel#InscriptionTo
+{
+    color: #6495ED;
+    padding: 5px 10px;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+QPushButton#Convert
+{
+    background-color: #6495ED;
+    color: white;
+    border: 2px solid white;
+    padding: 5px 10px;
+    font-size: 18px;
+    font-weight: bold;
+    border-radius: 10px;
+}
+
+QComboBox {
+    background-color: white;
+    color: #6495ED;
+    border: 2px solid #6495ED;
+    padding: 5px 10px;
+    font-size: 18px;
+    font-weight: bold;
+    border-radius: 10px;
+}
+
+QComboBox
+{
+    background-color: white;
+    color: #6495ED;
+    border: 2px solid #6495ED;
+    padding: 5px 10px;
+    font-size: 18px;
+    font-weight: bold;
+    border-radius: 10px;
+}
+
+QComboBox::drop-down
+{
+    border-left: 2px solid #6495ED;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+QComboBox::down-arrow {
+    image: url(:/resources/images/uptodown.png);
+}
+
+QLineEdit
+{
+    background-color: white;
+    color: #6495ED;
+    border: 2px solid #6495ED;
+    padding: 5px 10px;
+    font-size: 18px;
+    font-weight: bold;
+    border-radius: 10px;
+}
+
+QLineEdit:focus
+{
+    border: 2px solid #1E90FF;
+}
+
+QLineEdit::placeholder
+{
+    color: #6495ED;
+}
+
+
+QMessageBox
+{
+    background-color: #ffffff;
+    color: #6495ED;
+    font-size: 24px;
+    font-weight: bold;
+    padding: 5px 10px;
+}
+
+QMessageBox QLabel
+{
+    color: #6495ED;
+}
+
+QMessageBox QPushButton
+{
+    background-color: #6495ED;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+QMessageBox QPushButton:hover
+{
+    background-color: #4169E1;
+}
+
+
+
+
+

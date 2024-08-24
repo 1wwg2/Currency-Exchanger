@@ -8,14 +8,23 @@
 #include <QComboBox>
 #include <QLineEdit>
 #include <QMap>
+#include <QVBoxLayout>
+#include <QHBoxLayout>
+#include <QDoubleValidator>
+#include <QString>
+#include <QMessageBox>
+#include <QFile>
+
 
 #include "apiclient.h"
+
 class ExchangerWidget : public QWidget
 {
     Q_OBJECT
 
 public:
     ExchangerWidget(QWidget* parent = nullptr);
+
 protected slots:
     void MakeConvert();
     void onComboBoxIndexChangedFirst(int);
@@ -26,9 +35,10 @@ private:
     void SetObjectOnWindow();
     void InitializationComboBox();
     void ConnectToActualCurrencies();
+    void SetObjectNameForComponents();
+
     QLabel* InscriptionFrom;
     QLabel* InscriptionTo;
-    QLabel* IncorrertTypeEnter;
     QPushButton* Convert;
     QComboBox* ChoiceFirstСurrencyType;
     QComboBox* ChoiceSecondСurrencyType;
@@ -37,7 +47,6 @@ private:
     QMap<QString, double> ExchangeRates;
     ApiClient* DataForMapCurrency;
     QVector<QString> VectorOfСurrencies;
-
     int PreviousIndexFirstBox;
     int PreviousIndexSecondBox;
 };

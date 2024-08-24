@@ -1,9 +1,3 @@
-#include <QVBoxLayout>
-#include <QHBoxLayout>
-#include <QDoubleValidator>
-#include <QString>
-#include <QMessageBox>
-
 #include "customvalidator.h"
 #include "exchangerwidget.h"
 #include "apiclient.h"
@@ -11,6 +5,7 @@
 ExchangerWidget::ExchangerWidget(QWidget* parent) : QWidget(parent)
 {
     VectorOfСurrencies = {"UAH", "USD", "EUR", "RUB", "CZK"};
+
     InitializationComponents();
     SetObjectOnWindow();
 
@@ -37,9 +32,9 @@ void ExchangerWidget::MakeConvert()
         QString To = ChoiceSecondСurrencyType->currentText();
         double Amount = FirstFormBalance->text().toDouble();
 
-        double FromRate = ExchangeRates[To];
-        double ToRate = ExchangeRates[From];
-        double Result = (Amount / FromRate) * ToRate;
+        double ToRate = ExchangeRates[To];
+        double FromRate = ExchangeRates[From];
+        double Result = (Amount / ToRate) * FromRate;
 
 
         QString answerOnRequest = QString::number(Result, 'f', 2);
@@ -55,8 +50,9 @@ void ExchangerWidget::InitializationComponents()
     DataForMapCurrency->GetAPIInfo("https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange");
 
     InscriptionFrom = new QLabel("From:",this);
+
     InscriptionTo = new QLabel("To:",this);
-    IncorrertTypeEnter = new QLabel("Incorrect type");
+
     Convert = new QPushButton("Convert money");
 
     FirstFormBalance = new QLineEdit(this);
@@ -77,6 +73,7 @@ void ExchangerWidget::InitializationComponents()
     PreviousIndexFirstBox = ChoiceFirstСurrencyType->currentIndex();
     PreviousIndexSecondBox = ChoiceSecondСurrencyType->currentIndex();
 
+    SetObjectNameForComponents();
 }
 
 void ExchangerWidget::InitializationComboBox()
@@ -97,10 +94,13 @@ void ExchangerWidget::InitializationComboBox()
 void ExchangerWidget::SetObjectOnWindow()
 {
     QVBoxLayout* LabelNChoise = new QVBoxLayout();
+
     LabelNChoise->addWidget(InscriptionFrom);
+
 
     QHBoxLayout* LineEdit = new QHBoxLayout();
     LineEdit->setContentsMargins(0, 0, 0, 0);
+
     LineEdit->setSpacing(0);
     LineEdit->addWidget(ChoiceFirstСurrencyType);
     LineEdit->addWidget(FirstFormBalance);
@@ -119,7 +119,7 @@ void ExchangerWidget::SetObjectOnWindow()
 
     QVBoxLayout* mainContainer = new QVBoxLayout();
     mainContainer->addLayout(LabelNChoise);
-    mainContainer->setSpacing(5);
+    mainContainer->setSpacing(0);
     mainContainer->addLayout(LabelNChoiseSecond);
     mainContainer->addWidget(Convert);
 
@@ -128,7 +128,6 @@ void ExchangerWidget::SetObjectOnWindow()
 
 void ExchangerWidget::onComboBoxIndexChangedFirst(int index)
 {
-
     int CurrIndexSecondBox = ChoiceSecondСurrencyType->currentIndex();
     if (index == CurrIndexSecondBox)
     {
@@ -138,7 +137,6 @@ void ExchangerWidget::onComboBoxIndexChangedFirst(int index)
     {
         PreviousIndexFirstBox = index;
     }
-
 }
 
 void ExchangerWidget::onComboBoxIndexChangedSecond(int index)
@@ -152,7 +150,6 @@ void ExchangerWidget::onComboBoxIndexChangedSecond(int index)
     {
         PreviousIndexSecondBox = index;
     }
-
 }
 
 void ExchangerWidget::ConnectToActualCurrencies()
@@ -160,7 +157,6 @@ void ExchangerWidget::ConnectToActualCurrencies()
     ExchangeRates = DataForMapCurrency->GetMapWithFilterData();
 
     QSet<QString> validCurrencies(VectorOfСurrencies.begin(), VectorOfСurrencies.end());
-
     QMap<QString, double> filteredRates;
 
     for (auto it = ExchangeRates.constBegin(); it != ExchangeRates.constEnd(); ++it)
@@ -172,6 +168,17 @@ void ExchangerWidget::ConnectToActualCurrencies()
     }
     filteredRates.insert("UAH", 1);
     ExchangeRates = filteredRates;
+}
+
+void ExchangerWidget::SetObjectNameForComponents()
+{
+    InscriptionFrom->setObjectName("InscriptionFrom");
+    InscriptionTo->setObjectName("InscriptionTo");
+    Convert->setObjectName("Convert");
+    ChoiceFirstСurrencyType->setObjectName("ChoiceFirstСurrencyType");
+    ChoiceSecondСurrencyType->setObjectName("ChoiceSecondСurrencyType");
+    FirstFormBalance->setObjectName("FirstFormBalance");
+    SecondFormBalance->setObjectName("SecondFormBalance");
 }
 
 

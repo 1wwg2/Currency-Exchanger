@@ -1,8 +1,4 @@
 #include <QApplication>
-#include <QWidget>
-#include <QVBoxLayout>
-#include <QComboBox>
-#include <QLabel>
 
 #include "mainwindow.h"
 

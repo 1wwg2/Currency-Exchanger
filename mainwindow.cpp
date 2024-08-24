@@ -1,5 +1,5 @@
 #include "mainwindow.h"
-#include <QScreen>
+
 
 MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent)
 {
@@ -7,6 +7,16 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent)
 
    this->setFixedSize(350, 400);
    this->setWindowIcon(QIcon(":/resources/images/IconMoney.png"));
-    setCentralWidget(WidgetMain);
+
+   setCentralWidget(WidgetMain);
+   DesignAllApp();
 }
 
+void MainWindow::DesignAllApp()
+{
+    QFile file(":/resources/styles/currencystyle.css");
+    if (file.open(QIODevice::ReadOnly)) {
+        setStyleSheet(file.readAll());
+        file.close();
+    }
+}

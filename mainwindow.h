@@ -3,6 +3,9 @@
 
 #include <QApplication>
 #include <QMainWindow>
+#include <QScreen>
+#include <QFile>
+
 
 #include "exchangerwidget.h"
 
@@ -13,6 +16,7 @@ public:
     MainWindow(QWidget* parent = nullptr);
 
 private:
+    void DesignAllApp();
     ExchangerWidget* WidgetMain;
 };
 
