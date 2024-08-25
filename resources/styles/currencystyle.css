@@ -33,15 +33,6 @@ QPushButton#Convert
     border-radius: 10px;
 }
 
-QComboBox {
-    background-color: white;
-    color: #6495ED;
-    border: 2px solid #6495ED;
-    padding: 5px 10px;
-    font-size: 18px;
-    font-weight: bold;
-    border-radius: 10px;
-}
 
 QComboBox
 {
@@ -56,12 +47,15 @@ QComboBox
 
 QComboBox::drop-down
 {
+    color: #6495ED;
     border-left: 2px solid #6495ED;
     border-top-right-radius: 10px;
     border-bottom-right-radius: 10px;
+
 }
 
-QComboBox::down-arrow {
+QComboBox::down-arrow
+{
     image: url(:/resources/images/uptodown.png);
 }
 
